@@ -25,6 +25,7 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+  - stylesheets/player.css
 
 extra:
   social:
@@ -59,3 +60,6 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - javascripts/music-player.js

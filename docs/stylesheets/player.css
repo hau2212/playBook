@@ -1,0 +1,262 @@
+/* ============================================================
+   Floating Music Player - Rigid Terminal Design (Bản Full)
+   ============================================================ */
+#floating-player {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 9999;
+  font-family: var(--md-text-font, "Courier Prime", monospace);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#floating-player .fp-box {
+  position: relative;
+  width: 42px;
+  height: 42px;
+}
+
+/* Nút Logo: Vuông vức, cứng cáp */
+#floating-player .fp-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 0;
+  border: 1px solid var(--md-accent-fg-color, #c9a96e);
+  background: var(--md-default-bg-color);
+  color: var(--md-accent-fg-color, #c9a96e);
+  font-size: 18px;
+  font-weight: bold;
+  cursor: grab;
+  box-shadow: 4px 4px 0px var(--md-shadow-color);
+  transition: transform 0.1s, box-shadow 0.1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#floating-player .fp-toggle:active {
+  cursor: grabbing;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--md-shadow-color);
+}
+
+/* Bảng điều khiển */
+#floating-player .fp-panel {
+  position: absolute;
+  left: 56px; 
+  bottom: 0;  
+  background: var(--md-default-bg-color);
+  border: 1px solid var(--md-accent-fg-color);
+  border-radius: 0;
+  padding: 15px;
+  width: 280px; /* Nới rộng để chứa thanh thời gian */
+  box-shadow: 6px 6px 0px var(--md-shadow-color);
+  color: var(--md-default-fg-color);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: opacity 0.2s, transform 0.2s;
+  transform-origin: bottom left;
+}
+
+#floating-player .fp-panel.fp-collapsed {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+/* Tên bài hát */
+#floating-player .fp-track {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--md-accent-fg-color, #c9a96e);
+  border-bottom: 1px dashed var(--md-accent-fg-color);
+  padding-bottom: 8px;
+  margin-bottom: 5px;
+}
+
+/* KHUNG THỜI GIAN (Mới) */
+#floating-player .fp-progress-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+#floating-player .fp-progress-group span {
+  min-width: 35px;
+  text-align: center;
+  color: var(--md-default-fg-color);
+}
+
+/* Các Nút Điều Khiển */
+#floating-player .fp-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin: 5px 0;
+}
+
+#floating-player .fp-controls button {
+  background: none;
+  border: none;
+  color: var(--md-default-fg-color);
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+#floating-player .fp-controls button:hover {
+  color: var(--md-accent-fg-color, #c9a96e);
+}
+
+#floating-player .fp-controls #fp-play {
+  font-size: 20px;
+}
+
+/* Khung Âm Lượng */
+#floating-player .fp-volume-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#floating-player .fp-volume-group span {
+  font-size: 14px;
+}
+
+/* ============================================================
+   CUSTOM SLIDER (Thanh trượt góc cạnh)
+   ============================================================ */
+#floating-player input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none; /* Xóa style mặc định */
+  width: 100%;
+  background: transparent;
+  outline: none;
+  margin: 0;
+}
+
+/* Trục thanh trượt (Track) */
+#floating-player input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: var(--md-primary-bg-color); /* Màu nền chìm */
+  border: 1px solid var(--md-accent-fg-color); /* Viền sắc nét */
+  border-radius: 0;
+}
+
+/* Nút cầm để kéo (Thumb) - Đã bỏ bo tròn, vuông vức 100% */
+#floating-player input[type="range"]::-webkit-slider-thumb {
+  height: 14px;
+  width: 10px;
+  border-radius: 0;
+  background: var(--md-accent-fg-color);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -5px; /* Căn giữa thumb với track */
+  border: 1px solid var(--md-default-bg-color); /* Cắt viền nổi */
+}
+
+/* Hỗ trợ Firefox */
+#floating-player input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: var(--md-primary-bg-color);
+  border: 1px solid var(--md-accent-fg-color);
+  border-radius: 0;
+}
+#floating-player input[type="range"]::-moz-range-thumb {
+  height: 14px;
+  width: 10px;
+  border-radius: 0;
+  background: var(--md-accent-fg-color);
+  cursor: pointer;
+  border: 1px solid var(--md-default-bg-color);
+}
+
+/* ============================================================
+   Lựa chọn Nguồn Phát
+   ============================================================ */
+#floating-player .fp-source {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  border-top: 1px dashed var(--md-accent-fg-color);
+  padding-top: 10px;
+}
+
+/* ============================================================
+   Ô NHẬP LIỆU YOUTUBE (Liền khối, khít 100%)
+   ============================================================ */
+#floating-player .fp-yt-input {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--md-accent-fg-color) !important;
+  background: var(--md-default-bg-color);
+  overflow: hidden;
+  border-radius: 0 !important;
+}
+
+#floating-player .fp-yt-input input {
+  flex: 1;
+  padding: 8px 10px;
+  margin: 0 !important;
+  border: none !important; 
+  border-radius: 0 !important;
+  background: transparent !important; 
+  color: var(--md-default-fg-color);
+  font-size: 12px;
+  font-family: inherit;
+  outline: none !important;
+  box-shadow: none !important;
+  appearance: none;
+  min-width: 0;
+}
+
+#floating-player .fp-yt-input input::placeholder {
+  color: var(--md-default-fg-color--light);
+}
+
+#floating-player .fp-yt-input button {
+  margin: 0 !important;
+  padding: 0 15px;
+  border: none !important;
+  border-left: 1px solid var(--md-accent-fg-color) !important;
+  border-radius: 0 !important;
+  background: var(--md-accent-fg-color) !important;
+  color: var(--md-primary-fg-color) !important; 
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none !important;
+  appearance: none;
+}
+
+#floating-player .fp-yt-input button:hover {
+  opacity: 0.8;
+}
+
+#fp-yt-container {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
