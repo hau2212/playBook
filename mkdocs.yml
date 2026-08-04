@@ -1,0 +1,61 @@
+site_name: My Docs
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: slate
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Chuyển sang giao diện sáng
+    - scheme: default
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Chuyển sang giao diện tối
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/hau2212
+      name: GitHub
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/your-invite-code
+      name: Discord
+
+nav:
+  - test:
+      - test:
+          - test:
+              - test: docs/test.md
+  - Red Team:
+      - Web Pentest:
+          - XSS: redteam/xss.md
+          - SQLi: redteam/sqli.md
+      - Binary Exploit:
+          - Stack Overflow: redteam/stack-overflow.md
+  - SOC:
+      - Splunk SPL: soc/splunk.md
+  - Reverse Engineering:
+      - x64dbg workflow: re/x64dbg.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
