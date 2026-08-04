@@ -19,7 +19,7 @@
     
     
       
-        <title>Test bài viết đầu tiên - My Docs</title>
+        <title>Packet Sniffing với Airodump-ng - My Docs</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#reflected-xss-tren-module-search" class="md-skip">
+        <a href="#packet-sniffing-voi-airodump-ng" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Test bài viết đầu tiên
+              Packet Sniffing với Airodump-ng
             
           </span>
         </div>
@@ -900,10 +900,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#mo-ta" class="md-nav__link">
+  <a href="#muc-ich-su-dung" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mô tả
+        Mục đích sử dụng
       
     </span>
   </a>
@@ -911,10 +911,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#root-cause" class="md-nav__link">
+  <a href="#quy-trinh-su-dung" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Root cause
+        Quy trình sử dụng
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quy trình sử dụng">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buoc-1-bat-che-o-monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 1 — Bật chế độ Monitor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buoc-2-chay-lenh-bat-goi-tin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 2 — Chạy lệnh bắt gói tin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buoc-3-oc-ket-qua-hien-thi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 3 — Đọc kết quả hiển thị
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buoc-4-dung-qua-trinh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bước 4 — Dừng quá trình
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ung-dung-cho-buoc-tiep-theo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ứng dụng cho bước tiếp theo
       
     </span>
   </a>
@@ -922,32 +983,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#proof-of-concept" class="md-nav__link">
+  <a href="#ket-luan" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Proof of Concept
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#danh-sach-kiem-tra" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Danh sách kiểm tra
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bang-tom-tat" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bảng tóm tắt
+        Kết luận
       
     </span>
   </a>
@@ -971,48 +1010,113 @@
 
 
 
-<h1 id="reflected-xss-tren-module-search">Reflected XSS trên module search</h1>
-<h2 id="mo-ta">Mô tả</h2>
-<p>Đây là bài viết test để kiểm tra MkDocs đã chạy đúng chưa. Nội dung này có thể xóa/sửa sau khi test xong.</p>
-<h2 id="root-cause">Root cause</h2>
-<p>Input từ tham số <code>q</code> trong URL search không được encode trước khi render ra HTML, dẫn đến payload JavaScript được thực thi trực tiếp trên trình duyệt nạn nhân.</p>
-<h2 id="proof-of-concept">Proof of Concept</h2>
-<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span><span class="nx">alert</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">)&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</code></pre></div>
-<h2 id="danh-sach-kiem-tra">Danh sách kiểm tra</h2>
-<ul>
-<li>[x] Xác định input point</li>
-<li>[x] Confirm reflected trong response</li>
-<li>[ ] Viết PoC hoàn chỉnh</li>
-<li>[ ] Đề xuất remediation</li>
-</ul>
-<h2 id="bang-tom-tat">Bảng tóm tắt</h2>
+<h1 id="packet-sniffing-voi-airodump-ng">Packet Sniffing với Airodump-ng</h1>
+<div class="admonition note">
+<p class="admonition-title">Khái niệm</p>
+<p><strong>Airodump-ng</strong> là chương trình sniffing gói tin (packet sniffer) thuộc bộ công cụ bảo mật <strong>aircrack-ng</strong>, dùng để bắt toàn bộ gói tin Wi-Fi trong phạm vi phủ sóng.</p>
+</div>
+<p>Chương trình hiển thị chi tiết các mạng không dây xung quanh cùng danh sách client đang kết nối vào từng mạng.</p>
+<div class="admonition tip">
+<p class="admonition-title">Điểm đặc biệt</p>
+<p>Airodump-ng bắt được gói tin <strong>kể cả khi không gửi trực tiếp đến máy bạn</strong> — không cần kết nối vào mạng mục tiêu, không cần biết password/key của mạng đó.</p>
+</div>
+<h2 id="muc-ich-su-dung">Mục đích sử dụng</h2>
 <table>
 <thead>
 <tr>
-<th>Trường</th>
-<th>Giá trị</th>
+<th>Mục đích</th>
+<th>Mô tả</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>CWE</td>
-<td>CWE-79</td>
+<td>Trinh sát mạng</td>
+<td>Quét và hiển thị toàn bộ mạng Wi-Fi xung quanh khu vực</td>
 </tr>
 <tr>
-<td>Severity</td>
-<td>Medium</td>
+<td>Thu thập thông số</td>
+<td>Lấy MAC (BSSID), mã hóa, kênh hoạt động, ESSID</td>
 </tr>
 <tr>
-<td>Status</td>
-<td>Đang phân tích</td>
+<td>Tiền đề bẻ khóa</td>
+<td>Thu thập đủ Data packets làm cơ sở crack WEP/WPA/WPA2</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p><strong>Note:</strong> Đây chỉ là bài test, chưa phải bài viết thật.</p>
-</blockquote>
-<p>Liên kết thử: <a href="index.md">Trang chủ</a></p>
+<h2 id="quy-trinh-su-dung">Quy trình sử dụng</h2>
+<h3 id="buoc-1-bat-che-o-monitor">Bước 1 — Bật chế độ Monitor</h3>
+<p>Card mạng bắt buộc phải ở <strong>Monitor mode</strong> (ví dụ tên card <code>mon0</code>).</p>
+<h3 id="buoc-2-chay-lenh-bat-goi-tin">Bước 2 — Chạy lệnh bắt gói tin</h3>
+<div class="highlight"><pre><span></span><code>airodump-ng<span class="w"> </span>&lt;Tên_giao_diện_Monitor&gt;
+</code></pre></div>
+<p>Ví dụ:</p>
+<div class="highlight"><pre><span></span><code>airodump-ng<span class="w"> </span>mon0
+</code></pre></div>
+<h3 id="buoc-3-oc-ket-qua-hien-thi">Bước 3 — Đọc kết quả hiển thị</h3>
+<!-- Thay bằng ảnh thật khi bạn upload, ví dụ: ![Airodump-ng output](../assets/img/airodump-output.png) -->
+<p><img alt="Airodump-ng output" src="assets/img/airodump-output.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Cột</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BSSID</strong></td>
+<td>Địa chỉ MAC của Access Point mục tiêu</td>
+</tr>
+<tr>
+<td><strong>PWR</strong></td>
+<td>Cường độ tín hiệu — càng cao càng tốt</td>
+</tr>
+<tr>
+<td><strong>Beacons</strong></td>
+<td>Khung tin quảng bá sự tồn tại mạng, kể cả mạng ẩn</td>
+</tr>
+<tr>
+<td><strong>#Data</strong></td>
+<td>Số gói tin dữ liệu đã bắt — thông số quan trọng nhất để crack</td>
+</tr>
+<tr>
+<td><strong>CH</strong></td>
+<td>Kênh (channel) mạng đang hoạt động</td>
+</tr>
+<tr>
+<td><strong>MB</strong></td>
+<td>Tốc độ truyền tải tối đa hỗ trợ</td>
+</tr>
+<tr>
+<td><strong>ENC</strong></td>
+<td>Chuẩn mã hóa: <code>WPA2</code> / <code>WPA</code> / <code>WEP</code> / <code>OPN</code> (mạng mở)</td>
+</tr>
+<tr>
+<td><strong>CIPHER</strong></td>
+<td>Thuật toán mã hóa (VD: <code>CCMP</code>, <code>WEP</code>)</td>
+</tr>
+<tr>
+<td><strong>AUTH</strong></td>
+<td>Phương thức xác thực: <code>PSK</code> hoặc <code>MGT</code></td>
+</tr>
+<tr>
+<td><strong>ESSID</strong></td>
+<td>Tên hiển thị của mạng Wi-Fi</td>
+</tr>
+</tbody>
+</table>
+<h3 id="buoc-4-dung-qua-trinh">Bước 4 — Dừng quá trình</h3>
+<p>Chương trình chạy liên tục cho tới khi dừng thủ công:</p>
+<div class="highlight"><pre><span></span><code>Ctrl<span class="w"> </span>+<span class="w"> </span>C
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Lưu ý</p>
+<p>Toàn bộ quy trình <strong>không cần kết nối Internet</strong> hay kết nối vào bất kỳ mạng cục bộ nào — airodump-ng hoạt động độc lập ở tầng liên kết dữ liệu (Layer 2).</p>
+</div>
+<h2 id="ung-dung-cho-buoc-tiep-theo">Ứng dụng cho bước tiếp theo</h2>
+<p>Các thông số ở cột <code>ENC</code>, <code>CIPHER</code>, <code>AUTH</code> là dữ liệu quyết định phương thức tấn công phù hợp (WEP IV reuse, WPA handshake capture, PMKID attack...).</p>
+<h2 id="ket-luan">Kết luận</h2>
+<p>Airodump-ng là công cụ sniffing mạnh mẽ để khám phá và phân tích chi tiết mọi mạng Wi-Fi xung quanh cùng client đang kết nối. Hiểu đúng ý nghĩa từng tham số (BSSID, PWR, ENC...) giúp thu thập đủ dữ liệu cần thiết cho bước kiểm thử xâm nhập hoặc bẻ khóa mật khẩu tiếp theo.</p>
 
 
 
