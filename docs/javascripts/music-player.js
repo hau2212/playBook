@@ -9,7 +9,8 @@
     { title: "[NET_STREAM_01]", videoId: "lw6GgjJ8guw" }
   ];
 
-  var DEFAULT_SOURCE = "local";
+  /* 1. ĐỔI MẶC ĐỊNH SANG YOUTUBE (Bỏ qua Local) */
+  var DEFAULT_SOURCE = "youtube";
 
   var state = {
     source: DEFAULT_SOURCE,
@@ -39,7 +40,6 @@
       '  <div class="fp-panel fp-collapsed" id="fp-panel">' +
       '    <div class="fp-track" id="fp-track">[STANDBY]</div>' +
       
-      /* Đã đổi ngoặc tròn thành ngoặc vuông */
       '    <div class="fp-progress-group">' +
       '      <span id="fp-time-current">[0:00]</span>' +
       '      <input id="fp-progress" type="range" min="0" max="100" value="0" step="0.1">' +
@@ -57,11 +57,14 @@
       '      <input id="fp-volume" type="range" min="0" max="100" value="40" title="Âm lượng">' +
       '    </div>' +
       
-      '    <div class="fp-source">' +
-      '      <label><input type="radio" name="fp-src" value="local" checked> [LOCAL_DB]</label>' +
-      '      <label><input type="radio" name="fp-src" value="youtube"> [NET_STREAM]</label>' +
-      '    </div>' +
-      '    <div class="fp-yt-input" id="fp-yt-input-group" style="display:none;">' +
+      /* 2. ĐÃ XÓA (ẨN) GIAO DIỆN CHUYỂN ĐỔI LOCAL/YOUTUBE */
+      // '    <div class="fp-source">' +
+      // '      <label><input type="radio" name="fp-src" value="local" checked> [LOCAL_DB]</label>' +
+      // '      <label><input type="radio" name="fp-src" value="youtube"> [NET_STREAM]</label>' +
+      // '    </div>' +
+      
+      /* 3. HIỂN THỊ LUÔN Ô NHẬP LINK YOUTUBE (Đổi display:none thành display:flex) */
+      '    <div class="fp-yt-input" id="fp-yt-input-group" style="display:flex;">' +
       '      <input type="text" id="fp-yt-link" placeholder="Dán link hoặc ID YouTube" autocomplete="off">' +
       '      <button id="fp-yt-load">Phát</button>' +
       '    </div>' +
@@ -89,7 +92,6 @@
       if (state.source === "local" && audioEl) dur = audioEl.duration;
       if (state.source === "youtube" && state.ytPlayer && state.ytPlayer.getDuration) dur = state.ytPlayer.getDuration();
       if (!isNaN(dur)) {
-        /* Đã đổi ngoặc tròn thành ngoặc vuông */
         document.getElementById("fp-time-current").textContent = "[" + formatTime(percent * dur) + "]";
       }
     });
@@ -106,14 +108,15 @@
       }
     });
 
-    var radios = document.getElementsByName("fp-src");
-    for (var i = 0; i < radios.length; i++) {
-      radios[i].addEventListener("change", function (e) {
-        var isYt = e.target.value === "youtube";
-        document.getElementById("fp-yt-input-group").style.display = isYt ? "flex" : "none";
-        switchSource(e.target.value);
-      });
-    }
+    /* 4. ĐÃ TẮT SỰ KIỆN CLICK VÀO NÚT RADIO BỊ ẨN */
+    // var radios = document.getElementsByName("fp-src");
+    // for (var i = 0; i < radios.length; i++) {
+    //   radios[i].addEventListener("change", function (e) {
+    //     var isYt = e.target.value === "youtube";
+    //     document.getElementById("fp-yt-input-group").style.display = isYt ? "flex" : "none";
+    //     switchSource(e.target.value);
+    //   });
+    // }
 
     document.getElementById("fp-yt-load").addEventListener("click", function() {
       var inputVal = document.getElementById("fp-yt-link").value.trim();
@@ -149,14 +152,11 @@
 
     if (total > 0 && !isNaN(total)) {
       pBar.value = (current / total) * 100;
-      /* Đã đổi ngoặc tròn thành ngoặc vuông */
       tTot.textContent = "[" + formatTime(total) + "]";
     } else {
       pBar.value = 0;
-      /* Đã đổi ngoặc tròn thành ngoặc vuông */
       tTot.textContent = "[0:00]";
     }
-    /* Đã đổi ngoặc tròn thành ngoặc vuông */
     tCurr.textContent = "[" + formatTime(current) + "]";
   }
 
