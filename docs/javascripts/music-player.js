@@ -1,15 +1,12 @@
 (function () {
   "use strict";
 
-  var LOCAL_TRACKS = [
-    { title: "[SYS_AUDIO_01]", src: "/assets/audio/lofi-1.mp3" },
-  ];
+  var LOCAL_TRACKS = [];
 
   var YOUTUBE_TRACKS = [
     { title: "[NET_STREAM_01]", videoId: "lw6GgjJ8guw" }
   ];
 
-  /* 1. ĐỔI MẶC ĐỊNH SANG YOUTUBE (Bỏ qua Local) */
   var DEFAULT_SOURCE = "youtube";
 
   var state = {
@@ -34,9 +31,10 @@
   function buildUI() {
     var wrap = document.createElement("div");
     wrap.id = "floating-player";
+
     wrap.innerHTML =
       '<div class="fp-box">' +
-      '  <div class="fp-toggle" id="fp-toggle" title="Kéo để di chuyển / Click để mở">[&#9654;]</div>' +
+      '  <div class="fp-toggle" id="fp-toggle" title="Kéo để di chuyển / Click để mở">&#9654;</div>' +
       '  <div class="fp-panel fp-collapsed" id="fp-panel">' +
       '    <div class="fp-track" id="fp-track">[STANDBY]</div>' +
       
@@ -57,13 +55,6 @@
       '      <input id="fp-volume" type="range" min="0" max="100" value="40" title="Âm lượng">' +
       '    </div>' +
       
-      /* 2. ĐÃ XÓA (ẨN) GIAO DIỆN CHUYỂN ĐỔI LOCAL/YOUTUBE */
-      // '    <div class="fp-source">' +
-      // '      <label><input type="radio" name="fp-src" value="local" checked> [LOCAL_DB]</label>' +
-      // '      <label><input type="radio" name="fp-src" value="youtube"> [NET_STREAM]</label>' +
-      // '    </div>' +
-      
-      /* 3. HIỂN THỊ LUÔN Ô NHẬP LINK YOUTUBE (Đổi display:none thành display:flex) */
       '    <div class="fp-yt-input" id="fp-yt-input-group" style="display:flex;">' +
       '      <input type="text" id="fp-yt-link" placeholder="Dán link hoặc ID YouTube" autocomplete="off">' +
       '      <button id="fp-yt-load">Phát</button>' +
@@ -89,8 +80,7 @@
       state.isDraggingProgress = true;
       var percent = e.target.value / 100;
       var dur = 0;
-      if (state.source === "local" && audioEl) dur = audioEl.duration;
-      if (state.source === "youtube" && state.ytPlayer && state.ytPlayer.getDuration) dur = state.ytPlayer.getDuration();
+      if (state.ytPlayer && state.ytPlayer.getDuration) dur = state.ytPlayer.getDuration();
       if (!isNaN(dur)) {
         document.getElementById("fp-time-current").textContent = "[" + formatTime(percent * dur) + "]";
       }
@@ -99,24 +89,11 @@
     pBar.addEventListener("change", function(e) {
       state.isDraggingProgress = false;
       var percent = e.target.value / 100;
-      if (state.source === "local" && audioEl) {
-        var newTime = percent * audioEl.duration;
-        if (!isNaN(newTime)) audioEl.currentTime = newTime;
-      } else if (state.source === "youtube" && state.ytPlayer && state.ytPlayer.seekTo) {
+      if (state.ytPlayer && state.ytPlayer.seekTo) {
         var newTime = percent * state.ytPlayer.getDuration();
         if (!isNaN(newTime)) state.ytPlayer.seekTo(newTime, true);
       }
     });
-
-    /* 4. ĐÃ TẮT SỰ KIỆN CLICK VÀO NÚT RADIO BỊ ẨN */
-    // var radios = document.getElementsByName("fp-src");
-    // for (var i = 0; i < radios.length; i++) {
-    //   radios[i].addEventListener("change", function (e) {
-    //     var isYt = e.target.value === "youtube";
-    //     document.getElementById("fp-yt-input-group").style.display = isYt ? "flex" : "none";
-    //     switchSource(e.target.value);
-    //   });
-    // }
 
     document.getElementById("fp-yt-load").addEventListener("click", function() {
       var inputVal = document.getElementById("fp-yt-link").value.trim();
@@ -179,6 +156,7 @@
     var isDragging = false;
     var hasMoved = false;
     var startX, startY, initialX, initialY;
+    var lastToggleTime = 0; 
 
     function dragStart(e) {
       if (e.type === "touchstart") e = e.touches[0];
@@ -198,7 +176,7 @@
       var dx = clientX - startX;
       var dy = clientY - startY;
       
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
         hasMoved = true;
         wrap.style.left = (initialX + dx) + "px";
         wrap.style.top = (initialY + dy) + "px";
@@ -209,7 +187,13 @@
     function dragEnd(e) {
       if (!isDragging) return;
       isDragging = false;
-      if (!hasMoved) panel.classList.toggle("fp-collapsed");
+      if (!hasMoved) {
+        var now = new Date().getTime();
+        if (now - lastToggleTime > 400) {
+          panel.classList.toggle("fp-collapsed");
+          lastToggleTime = now;
+        }
+      }
     }
 
     toggle.addEventListener("mousedown", dragStart);
@@ -221,50 +205,14 @@
     document.addEventListener("touchend", dragEnd);
   }
 
-  var audioEl = null;
-  function getAudioEl() {
-    if (!audioEl) {
-      audioEl = new Audio();
-      audioEl.addEventListener("ended", function () { changeTrack(1); });
-      
-      audioEl.addEventListener("timeupdate", function() {
-        updateProgressUI(audioEl.currentTime, audioEl.duration);
-      });
-      audioEl.addEventListener("loadedmetadata", function() {
-        updateProgressUI(audioEl.currentTime, audioEl.duration);
-      });
-    }
-    return audioEl;
-  }
-
   function currentList() {
-    return state.source === "local" ? LOCAL_TRACKS : YOUTUBE_TRACKS;
+    return YOUTUBE_TRACKS;
   }
 
   function updateTrackLabel() {
     var list = currentList();
     var t = list[state.index];
     document.getElementById("fp-track").textContent = t ? t.title : "[NO_DATA]";
-  }
-
-  function playLocal() {
-    var list = LOCAL_TRACKS;
-    if (!list.length) return;
-    var a = getAudioEl();
-    a.src = list[state.index].src;
-    a.volume = document.getElementById("fp-volume").value / 100;
-    a.play().then(function() {
-      state.playing = true;
-      updatePlayIcon();
-    }).catch(function(err) {
-      console.warn("Autoplay bị chặn bởi trình duyệt, cần click để phát.");
-    });
-  }
-
-  function pauseLocal() {
-    if (audioEl) audioEl.pause();
-    state.playing = false;
-    updatePlayIcon();
   }
 
   function ensureYouTube(callback) {
@@ -288,22 +236,23 @@
             onReady: function (e) {
               e.target.setVolume(document.getElementById("fp-volume").value);
               e.target.playVideo();
-              state.playing = true;
-              updatePlayIcon();
             },
             onStateChange: function (e) {
-              if (e.data === YT.PlayerState.PLAYING) startYtProgress();
-              else stopYtProgress();
-              
+              if (e.data === YT.PlayerState.PLAYING) {
+                state.playing = true;
+                updatePlayIcon();
+                startYtProgress();
+              } else {
+                state.playing = false;
+                updatePlayIcon();
+                stopYtProgress();
+              }
               if (e.data === YT.PlayerState.ENDED) changeTrack(1);
             }
           }
         });
       } else {
         state.ytPlayer.loadVideoById(vid);
-        state.playing = true;
-        updatePlayIcon();
-        startYtProgress();
       }
     });
   }
@@ -317,9 +266,9 @@
 
   function togglePlay() {
     if (state.playing) {
-      state.source === "local" ? pauseLocal() : pauseYouTube();
+      pauseYouTube();
     } else {
-      state.source === "local" ? playLocal() : playYouTube();
+      playYouTube();
     }
   }
 
@@ -329,38 +278,34 @@
     state.index = (state.index + delta + list.length) % list.length;
     
     updateProgressUI(0, 0); 
-    
     updateTrackLabel();
     if (state.playing) {
-      state.source === "local" ? playLocal() : playYouTube();
+      playYouTube();
     }
   }
 
-  function switchSource(src) {
-    pauseLocal();
-    pauseYouTube();
-    state.source = src;
-    state.index = 0;
-    updateProgressUI(0, 0);
-    updateTrackLabel();
-  }
-
   function setVolume(v) {
-    if (state.source === "local" && audioEl) audioEl.volume = v / 100;
-    if (state.source === "youtube" && state.ytPlayer && state.ytPlayer.setVolume) state.ytPlayer.setVolume(v);
+    if (state.ytPlayer && state.ytPlayer.setVolume) state.ytPlayer.setVolume(v);
   }
 
   function updatePlayIcon() {
     var btn = document.getElementById("fp-play");
-    if (btn) btn.innerHTML = state.playing ? "&#9724;" : "&#9654;";
+    var toggleBtn = document.getElementById("fp-toggle");
+    
+    // Đã thay đổi thành đúng mã Tam Giác Đều (&#9654;) và Hình Vuông Chuẩn (&#9724;)
+    var iconPlay = "&#9654;"; // ▶
+    var iconPause = "&#9724;"; // ◼
+    
+    if (btn) {
+      btn.innerHTML = state.playing ? iconPause : iconPlay;
+    }
+    if (toggleBtn) {
+      toggleBtn.innerHTML = state.playing ? iconPause : iconPlay;
+    }
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     buildUI();
     updateTrackLabel();
-    
-    setTimeout(function() {
-      if(!state.playing) togglePlay();
-    }, 500);
   });
 })();

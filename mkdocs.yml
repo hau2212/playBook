@@ -26,6 +26,7 @@ theme:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/player.css
+  - stylesheets/audio-trap.css
 
 extra:
   social:
@@ -63,3 +64,4 @@ markdown_extensions:
 
 extra_javascript:
   - javascripts/music-player.js
+  - javascripts/audio-trap.js
