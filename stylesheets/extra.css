@@ -1,149 +1,199 @@
 /* ============================================================
-   Elegant Dark Theme — nền đen sang trọng, có toggle light/dark
+   TERMINAL & RIGID BRUTALISM THEME (FULL WEBSITE REDESIGN)
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
+
 :root {
-  /* 1. Áp dụng cho toàn bộ văn bản (đưa CourierPrime lên vị trí đầu tiên) */
   --md-text-font: "Courier Prime", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  
-  /* 2. Trừ code ra (Xóa CourierPrime khỏi dòng này, để lại các font code tiêu chuẩn) */
   --md-code-font: "Cascadia Code", "SF Mono", Consolas, "Courier New", monospace;
 }
 
-/* ---------- DARK (slate) — bảng màu chính, đen sang trọng ---------- */
+/* ============================================================
+   1. BẢNG MÀU & BÓNG ĐỔ (LIGHT / DARK)
+   ============================================================ */
+/* ---------- DARK MODE (Slate) ---------- */
 [data-md-color-scheme="slate"] {
   --md-primary-fg-color:         #0a0a0a;
-  --md-primary-fg-color--light:  #1a1a1a;
-  --md-primary-fg-color--dark:   #000000;
+  --md-primary-fg-color--light:  #141414;
   --md-primary-bg-color:         #e8e2d4;
-
   --md-default-bg-color:         #0a0a0a;
   --md-default-fg-color:         #e8e2d4;
   --md-default-fg-color--light:  #a89f8c;
-  --md-default-fg-color--lighter:#6b6558;
-
   --md-accent-fg-color:          #c9a96e;
-  --md-accent-fg-color--transparent: rgba(201, 169, 110, 0.1);
-
-  --md-typeset-a-color:          #c9a96e;
-
   --md-code-bg-color:            #141414;
-  --md-code-fg-color:            #d4cdb8;
-
   --md-footer-bg-color:          #050505;
-  --md-footer-fg-color:          #e8e2d4;
+  --md-shadow-color:             rgba(201, 169, 110, 0.35); 
 }
 
-/* ---------- LIGHT (default) — kem/ngà nhẹ, giữ tinh thần tối giản ---------- */
+/* ---------- LIGHT MODE (Default) ---------- */
 [data-md-color-scheme="default"] {
   --md-primary-fg-color:         #0a0a0a;
   --md-primary-bg-color:         #f7f4ed;
-
   --md-default-bg-color:         #f7f4ed;
   --md-default-fg-color:         #17140f;
-
+  --md-default-fg-color--light:  #5e5445;
   --md-accent-fg-color:          #9c7a3c;
-  --md-typeset-a-color:          #9c7a3c;
-
   --md-code-bg-color:            #efeadd;
+  --md-shadow-color:             #2a2a2a; 
 }
 
-/* ---------- Typography — tinh chỉnh cho cảm giác sang trọng ---------- */
-.md-typeset h1,
-.md-typeset h2,
-.md-typeset h3 {
-  font-weight: 600;
-  letter-spacing: 0.01em;
+/* ============================================================
+   2. TYPOGRAPHY (KÍCH THƯỚC CHỮ)
+   ============================================================ */
+.md-typeset { font-size: 0.6rem; line-height: 1.6; }
+.md-nav__link { font-size: 0.64rem; }
+.md-typeset pre > code { font-size: 0.65rem; }
+
+.md-typeset h1, .md-typeset h2, .md-typeset h3 { font-weight: bold; letter-spacing: 0.02em; }
+.md-typeset h1 { font-size: 2rem; border-bottom: 2px solid var(--md-accent-fg-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+.md-typeset h2 { font-size: 1.35rem; color: var(--md-accent-fg-color); border-bottom: 1px dashed var(--md-accent-fg-color); padding-bottom: 0.3rem;}
+
+/* ============================================================
+   3. GÓC CẠNH HÓA TOÀN BỘ WEBSITE
+   ============================================================ */
+* {
+  --md-border-radius: 0 !important; 
 }
 
-.md-typeset h1 {
-  font-size: 2rem;
-  border-bottom: 1px solid var(--md-accent-fg-color);
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.5rem;
+/* ============================================================
+   4. THIẾT KẾ KHỐI (BLOCK DESIGN)
+   ============================================================ */
+.md-typeset pre > code,
+.md-typeset .admonition,
+.md-typeset details,
+.md-typeset img {
+  border: 1px solid var(--md-accent-fg-color) !important;
+  box-shadow: 4px 4px 0px var(--md-shadow-color) !important;
+  background-color: var(--md-code-bg-color);
+  border-radius: 0 !important;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.md-typeset h2 {
-  font-size: 1.35rem;
-  color: var(--md-accent-fg-color);
+.md-typeset .admonition-title {
+  border-bottom: 1px solid var(--md-accent-fg-color) !important;
+  background-color: rgba(201, 169, 110, 0.1) !important;
 }
 
-/* ---------- Header / Tabs — viền mảnh, không đổ bóng nặng ---------- */
+/* ============================================================
+   5. HEADER & FOOTER (CỬA SỔ NỔI CÁCH MÉP 4CM)
+   ============================================================ */
 .md-header {
-  box-shadow: none;
-  border-bottom: 1px solid rgba(201, 169, 110, 0.25);
+  background-color: var(--md-default-bg-color) !important;
+  
+  /* FIX LỖI 4CM MỖI BÊN: Tổng chiều rộng bằng 100% trừ đi 8cm (4cm trái + 4cm phải) */
+  width: calc(100% - 8cm) !important; 
+  max-width: none !important; 
+  margin: 1rem auto !important; 
+  
+  border: 1px solid var(--md-accent-fg-color) !important; 
+  box-shadow: 4px 4px 0px var(--md-shadow-color) !important;
+  border-radius: 0 !important;
+  top: 0; 
 }
 
-.md-tabs {
-  background-color: var(--md-primary-fg-color--light, var(--md-primary-fg-color));
-  border-bottom: 1px solid rgba(201, 169, 110, 0.2);
+/* FIX LỖI LOGO TÀNG HÌNH Ở LIGHT MODE: Ép toàn bộ chữ và icon trên Header đổi màu theo biến */
+.md-header,
+.md-header__button, 
+.md-header__title, 
+.md-header__source {
+  color: var(--md-default-fg-color) !important;
 }
 
-.md-tabs__link--active,
-.md-tabs__link:hover {
-  color: var(--md-accent-fg-color);
-  opacity: 1;
+.md-tabs { 
+  background-color: var(--md-primary-fg-color--light); 
+  border-bottom: none;
+  border-top: 1px dashed var(--md-accent-fg-color); 
+}
+.md-tabs__link--active, .md-tabs__link:hover { color: var(--md-accent-fg-color); font-weight: bold; }
+
+.md-footer { 
+  background-color: var(--md-default-bg-color) !important;
+  
+  /* ĐỒNG BỘ 4CM CHO FOOTER */
+  width: calc(100% - 8cm) !important; 
+  max-width: none !important;
+  margin: 2rem auto 1rem auto !important; 
+  
+  border: 1px solid var(--md-accent-fg-color) !important;
+  box-shadow: 4px 4px 0px var(--md-shadow-color) !important;
+  border-radius: 0 !important;
 }
 
-/* ---------- Sidebar navigation — active item nổi bật màu accent ---------- */
-.md-nav__link--active,
-.md-nav__link:focus,
+.md-footer__link { border-radius: 0 !important; }
+.md-footer__link:hover { background-color: var(--md-code-bg-color) !important; }
+
+/* Tránh lỗi vỡ khung ở màn hình điện thoại nhỏ (dưới 800px) */
+@media screen and (max-width: 800px) {
+  .md-header, .md-footer {
+    width: calc(100% - 2rem) !important;
+  }
+}
+
+/* ============================================================
+   6. THANH TÌM KIẾM (SEARCH BAR)
+   ============================================================ */
+.md-search__form {
+  border: 1px solid var(--md-accent-fg-color) !important;
+  box-shadow: 4px 4px 0px var(--md-shadow-color) !important;
+  background-color: var(--md-code-bg-color) !important;
+  border-radius: 0 !important;
+}
+
+.md-search__input {
+  background-color: transparent !important;
+  color: var(--md-default-fg-color) !important;
+}
+
+.md-search__input::placeholder { color: var(--md-default-fg-color--light) !important; }
+.md-search__icon { color: var(--md-default-fg-color) !important; }
+
+/* ============================================================
+   7. MENU ĐIỀU HƯỚNG & MỤC LỤC (SIDEBAR & TOC)
+   ============================================================ */
+.md-nav__link {
+  border-radius: 0 !important;
+  transition: background-color 0.1s ease, color 0.1s ease;
+  border: 1px solid transparent; 
+}
+
 .md-nav__link:hover {
   color: var(--md-accent-fg-color) !important;
+  background-color: rgba(201, 169, 110, 0.05);
 }
 
 .md-nav__item .md-nav__link--active {
-  font-weight: 600;
+  color: var(--md-accent-fg-color) !important;
+  font-weight: bold;
+  background-color: var(--md-code-bg-color) !important;
+  border: 1px solid var(--md-accent-fg-color) !important;
+  box-shadow: 4px 4px 0px var(--md-shadow-color) !important;
+  margin-right: 4px !important;
+  margin-bottom: 4px !important;
+  
+  /* FIX LỖI CHỮ SÁT MÉP: Đẩy chữ vào trong 10px cho cân đối */
+  padding-left: 10px !important; 
 }
 
-/* ---------- Code block — viền mảnh tinh tế thay vì bo tròn mặc định ---------- */
-.md-typeset code {
-  border-radius: 3px;
+.md-nav__item .md-nav__link--active:active {
+  box-shadow: 1px 1px 0px var(--md-shadow-color) !important;
+  transform: translate(3px, 3px);
 }
 
-.md-typeset pre > code {
-  border: 1px solid rgba(201, 169, 110, 0.15);
-  border-radius: 6px;
+/* ============================================================
+   8. NÚT BẤM VÀ CÁC THÀNH PHẦN KHÁC (BUTTONS)
+   ============================================================ */
+.md-button {
+  border: 1px solid var(--md-accent-fg-color) !important;
+  border-radius: 0 !important;
+  background: var(--md-default-bg-color);
+  box-shadow: 3px 3px 0px var(--md-shadow-color) !important;
+  color: var(--md-default-fg-color) !important;
+  font-weight: bold;
+  transition: transform 0.1s, box-shadow 0.1s;
 }
 
-/* ---------- Admonition (callout box) — viền accent thay vì màu mặc định ---------- */
-.md-typeset .admonition,
-.md-typeset details {
-  border-color: var(--md-accent-fg-color);
-  border-radius: 6px;
-}
-
-.md-typeset .admonition-title,
-.md-typeset summary {
-  background-color: var(--md-accent-fg-color--transparent, rgba(201,169,110,0.1));
-}
-
-/* ---------- Nút toggle light/dark — làm nổi bật hơn mặc định ---------- */
-.md-header__button.md-icon svg {
-  transition: transform 0.2s ease;
-}
-[data-md-color-scheme="slate"] .md-header__button.md-icon:hover svg {
-  color: var(--md-accent-fg-color);
-}
-
-/* ---------- Footer ---------- */
-.md-footer {
-  border-top: 1px solid rgba(201, 169, 110, 0.15);
-}
-
-/* ---------- font size ---------- */
-/* Thu nhỏ chữ của toàn bộ khu vực nội dung (bao gồm đoạn văn, danh sách...) */
-.md-typeset {
-  font-size: 0.6rem; /* Kích thước mặc định thường là 0.8rem. Bạn có thể giảm xuống 0.75rem hoặc 0.7rem */
-  line-height: 1.5;  /* Chỉnh lại khoảng cách giữa các dòng cho đỡ rối mắt */
-}
-
-/* (Tùy chọn) Thu nhỏ luôn cả chữ ở thanh menu bên trái */
-.md-nav__link {
-  font-size: 0.64rem;
-}
-
-/* (Tùy chọn) Thu nhỏ chữ bên trong các khối Code */
-.md-typeset pre > code {
-  font-size: 0.65rem; 
+.md-button:hover {
+  transform: translate(2px, 2px); 
+  box-shadow: 1px 1px 0px var(--md-shadow-color) !important;
+  color: var(--md-accent-fg-color) !important;
 }
