@@ -38,10 +38,11 @@ extra:
       name: Discord
 
 nav:
-  - test:
-      - test:
-          - test:
-              - test: docs/test.md
+  - Pentest:
+      - Tools: document/Pentest/Tools.md
+  - Theory:
+      - Window:
+          - NTFS: document/Theory/Window/NTFS.md
   - Red Team:
       - Web Pentest:
           - XSS: redteam/xss.md
@@ -56,6 +57,7 @@ nav:
 markdown_extensions:
   - admonition
   - pymdownx.details
+  - attr_list
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
